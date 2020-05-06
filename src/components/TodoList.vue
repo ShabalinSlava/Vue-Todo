@@ -1,6 +1,6 @@
 <template>
 <div>
-    <TodoItem v-for="todo of todos" v-bind:todo='todo' v-on:remove-todo='removeTodo' />
+    <TodoItem v-for="(todo, i) of todos" v-bind:todo='todo' v-bind:index='i' v-on:remove-todo='removeTodo' />
 </div>
 </template>
 
@@ -19,10 +19,3 @@ export default {
 };
 </script>
 
-<style scoped>
-ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-</style>

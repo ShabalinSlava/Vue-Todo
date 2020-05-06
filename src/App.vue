@@ -2,7 +2,9 @@
 <div id="app">
     <h1>{{ title }}</h1>
     <hr>
-    <TodoList v-bind:todos='todos' @remove-todo='removeTodo' />
+    <AddTodo @add-todo='addTodo' />
+    <TodoList v-bind:todos='todos' @remove-todo='removeTodo' v-if='todos.length' />
+    <p v-else>Нет заметок!</p>
 </div>
 </template>
 
@@ -12,7 +14,8 @@ import AddTodo from '@/components/AddTodo'
 export default {
     name: 'App',
     components: {
-        TodoList
+        TodoList,
+        AddTodo
     },
     data() {
         return {
@@ -41,6 +44,9 @@ export default {
     methods: {
       removeTodo(id) {
         this.todos = this.todos.filter(t => t.id !== id)
+      },
+      addTodo(title) {
+        this.todos.push(title)
       }
     }
 }
