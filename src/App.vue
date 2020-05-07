@@ -20,34 +20,36 @@ export default {
     data() {
         return {
             title: 'Todo application',
-            todos: [{
-                    id: 1,
-                    title: 'Домашние дела',
-                    project: 'Купить хлеб',
-                    completed: false
-                },
-                {
-                    id: 2,
-                    title: 'Учеба',
-                    project: 'Сдать долги',
-                    completed: false
-                },
-                {
-                    id: 3,
-                    title: 'Работа',
-                    project: 'Сделать тестовое',
-                    completed: false
-                },
-            ]
+            todos: []
         }
     },
+    created() {
+        this.$root.$on('save-todos', this.saveTodo)
+        console.log(this.todos)
+    },
+    mounted() {
+        if(JSON.parse(localStorage.getItem('todos'))){
+            this.todos = JSON.parse(localStorage.getItem('todos'))
+        }
+        
+    },
     methods: {
-      removeTodo(id) {
-        this.todos = this.todos.filter(t => t.id !== id)
-      },
-      addTodo(title) {
-        this.todos.push(title)
-      }
+        saveTodo(updatedTodo) {
+            this.todos[updatedTodo.id - 1] = updatedTodo
+            localStorage.setItem('todos', JSON.stringify(this.todos))
+        },
+        removeTodo(id) {
+            if(this.todos.length > 1) {
+                this.todos = this.todos.filter(t => t.id !== id)
+            }
+            this.todos = []
+            localStorage.setItem('todos', JSON.stringify(this.todos))
+        },
+        addTodo(todo) {
+            todo['id'] = this.todos.length + 1
+            this.todos.push(todo)
+            localStorage.setItem('todos', JSON.stringify(this.todos))
+        }
     }
 }
 </script>

@@ -5,17 +5,21 @@
         <form class='form' @submit.prevent='onSubmit'>
             <div class='field'>
                 <label>Заголовок:</label>
-                <input v-model="title" type='text' ref='title' defaultValue="">
+                <input v-model="task.title" type='text' ref='title' defaultValue="">
             </div>
-            <div class='field'>
+            <div class='field' v-for="projects of task.projects" :key="projects.id">
                 <label>Задачи:</label>
-                <input v-model="project" type='text' ref='project' defaultValue="">
+                <input v-model="projects.task" type='text' ref='projects' defaultValue="">
             </div>
+
             <div class='buttons'>
-                <button class='create-todo' v-on:click="onSubmit()">
-                    Создать
+                <button type="button" class='create-todo' v-on:click="createProject()">
+                    Добавить дело
                 </button>
-                <button class='delete-todo' v-on:click="closeForm">
+                <button type="submit" class='create-todo'>
+                    Сохранить
+                </button>
+                <button class='delete-todo' v-on:click="closeForm" type="button">
                     Отмена
                 </button>
             </div>
@@ -28,8 +32,14 @@
 export default {
     data() {
         return {
-            title: '',
-            project: '',
+            task: {
+                title: '',
+                projects: [{
+                    id: 1,
+                    task: '',
+                    completed: false
+                }],
+            },
             isCreating: false,
         };
     },
@@ -40,18 +50,25 @@ export default {
         closeForm() {
             this.isCreating = false;
         },
+        createProject() {
+            const id = this.task.projects.length + 1
+            this.task.projects.push({
+                id,
+                task: '',
+                completed: false
+            })
+        },
         onSubmit() {
-            if (this.title.trim() && this.project.trim()) {
-                const newTodo = {
-                    id: Date.now(),
-                    title: this.title,
-                    project: this.project,
-                    completed: false,
-                }
-                this.$emit('add-todo', newTodo);
-                this.title = ''
-                this.project = ''
-            }
+            const newTodo = this.task
+            this.$emit('add-todo', newTodo);
+            this.task =  {
+                title: '',
+                projects: [{
+                    id: 1,
+                    task: '',
+                    completed: false
+                }],
+            },
             this.isCreating = false;
         },
     },
@@ -83,7 +100,6 @@ export default {
     background: #3700ff;
     color: #fff;
 }
-
 
 input {
     margin-left: 10px;

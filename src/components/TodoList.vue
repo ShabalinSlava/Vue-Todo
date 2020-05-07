@@ -1,6 +1,11 @@
 <template>
 <div>
-    <TodoItem v-for="(todo, i) of todos" v-bind:todo='todo' v-bind:index='i' v-on:remove-todo='removeTodo' />
+    <TodoItem v-for='(todo, i) of todos' :todo='todo' :key="todo.id" :index='i'  @remove-todo='changeCofirmDelete' />
+    <div class="dialog" v-if="removedTodoId">
+        Подтвердить удаление
+        <button class="confirm" @click="removeTodo">Подтвердить</button>
+        <button class="cancled"  @click="removedTodoId = null;dialog = !dialog">Отмена</button>
+    </div>
 </div>
 </template>
 
@@ -11,9 +16,19 @@ export default {
     components: {
         TodoItem,
     },
+    data() {
+        return {
+            removedTodoId: null,
+            dialog: false
+        }
+    },
     methods: {
-        removeTodo(id) {
-            this.$emit('remove-todo', id)
+        changeCofirmDelete(id) {
+            this.removedTodoId = id
+            this.dialog = true
+        },
+        removeTodo() {
+            this.$emit('remove-todo', this.removedTodoId)
         }
     }
 };

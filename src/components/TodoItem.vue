@@ -2,12 +2,12 @@
 <div>
     <div class='content-todo' v-show='!isEditing'>
         <h2>{{ todo.title }}</h2>
-        <ul>
-            <li>
-                <span v-bind:class='{done: todo.completed}'>
-                    <input type='checkbox' v-on:change='todo.completed = !todo.completed' />
-                    <strong>{{ index + 1 }}</strong>
-                    {{ todo.project }}
+        <ul v-if="todo.projects.length">
+            <li v-for='project in todo.projects' :key='project.id'>
+                <span v-bind:class='{done: project.completed}'>
+                    <input type='checkbox' v-on:change='project.completed = !project.completed' v-model='project.completed' disabled />
+                    <strong>{{ project.id }}</strong>
+                    {{ project.task }}
                 </span>
             </li>
         </ul>
@@ -21,11 +21,13 @@
             <label>Заголовок:</label>
             <input type='text' v-model="todo.title">
         </div>
-        <div class='field'>
+        <div class='field' v-for="projects of todo.projects" :key="projects.id">
             <label>Задача:</label>
-            <input type='text' v-model="todo.project">
+            <input v-model="projects.completed" type='checkbox' ref='projects' defaultValue="">
+            <input type='text' v-model="projects.task">
         </div>
-        <button class='change-todo' v-on:click='hideForm'>Закрыть</button>
+        <button class='change-todo' v-on:click='saveTodo'>Сохранить / Закрыть</button>
+        <button class='change-todo' v-on:click='createProject'>Добавить дело</button>
     </div>
 </div>
 </template>
@@ -37,19 +39,29 @@ export default {
             type: Object,
             required: true
         },
-        index: Number
+        index: Number,
     },
     data() {
         return {
             isEditing: false,
+            newTodo: this.todo
         }
     },
     methods: {
+        createProject() {
+            const id = this.todo.projects.length + 1
+            this.todo.projects.push({
+                id,
+                task: '',
+                completed: false
+            })
+        },
         showForm() {
             this.isEditing = true;
         },
-        hideForm() {
-            this.isEditing = false;
+        saveTodo() {
+            this.$root.$emit('save-todos', this.newTodo)
+            this.isEditing = false
         }
     }
 }
