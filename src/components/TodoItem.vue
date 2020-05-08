@@ -3,9 +3,9 @@
     <div class='content-todo' v-show='!isEditing'>
         <h2>{{ todo.title }}</h2>
         <ul v-if="todo.projects.length">
-            <li v-for='project in todo.projects' :key='project.id'>
+            <li v-for='(project, i) in todo.projects' :index='i' :key='project.id'>
                 <span v-bind:class='{done: project.completed}'>
-                    <strong>{{ project.id }}</strong>
+                    <strong>{{ i + 1 }})</strong>
                     {{ project.task }}
                 </span>
             </li>
@@ -63,6 +63,7 @@ export default {
             this.$root.$emit('save-todos', this.newTodo)
             this.isEditing = false
         },
+        // Удаление задач
         removeProject(id) {
             if (this.todo.projects.length > 1) {
                 this.todo.projects = this.todo.projects.filter(p => p.id !== id)

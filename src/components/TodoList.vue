@@ -1,8 +1,8 @@
 <template>
 <div>
-    <TodoItem v-for='(todo, i) of todos' :todo='todo' :key="todo.id" :index='i' @remove-todo='changeReconfirmDelete' />
+    <TodoItem v-for='todo of todos' :todo='todo' :key="todo.id"  @remove-todo='changeReconfirmDelete' />
     <div class="confirmBlock" v-if="removedTodoId">
-        Подтвердить удаление списка задач?
+        <p>Подтвердить удаление списка задач?</p>
         <button class="reconfirm" @click="removeTodo">Подтвердить</button>
         <button class="cancel" @click="removedTodoId = null; confirmBlock = !confirmBlock">Отмена</button>
     </div>
@@ -33,3 +33,29 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.reconfirm {
+    border: 1px solid #00ff09;
+    color: #00ff09;
+    cursor: pointer;
+    margin: 0px 10px;
+}
+
+.reconfirm:hover {
+    background: #00ff09;
+    color: #fff;
+}
+
+.cancel {
+    border: 1px solid #ec5840;
+    color: #ec5840;
+    cursor: pointer;
+    margin: 0px 10px;
+}
+
+.cancel:hover {
+    background: #ec5840;
+    color: #fff;
+}
+</style>
