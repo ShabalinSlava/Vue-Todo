@@ -25,26 +25,28 @@ export default {
     },
     created() {
         this.$root.$on('save-todos', this.saveTodo)
-        console.log(this.todos)
     },
     mounted() {
-        if(JSON.parse(localStorage.getItem('todos'))){
+        if (JSON.parse(localStorage.getItem('todos'))) {
             this.todos = JSON.parse(localStorage.getItem('todos'))
         }
-        
+
     },
     methods: {
+        // Сохранение при перезагрузки страницы
         saveTodo(updatedTodo) {
             this.todos[updatedTodo.id - 1] = updatedTodo
             localStorage.setItem('todos', JSON.stringify(this.todos))
         },
+        // Удаление
         removeTodo(id) {
-            if(this.todos.length > 1) {
+            if (this.todos.length > 1) {
                 this.todos = this.todos.filter(t => t.id !== id)
             }
             this.todos = []
             localStorage.setItem('todos', JSON.stringify(this.todos))
         },
+        // Добавление
         addTodo(todo) {
             todo['id'] = this.todos.length + 1
             this.todos.push(todo)

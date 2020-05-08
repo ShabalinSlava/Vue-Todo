@@ -1,10 +1,10 @@
 <template>
 <div>
-    <TodoItem v-for='(todo, i) of todos' :todo='todo' :key="todo.id" :index='i'  @remove-todo='changeCofirmDelete' />
-    <div class="dialog" v-if="removedTodoId">
+    <TodoItem v-for='(todo, i) of todos' :todo='todo' :key="todo.id" :index='i' @remove-todo='changeReconfirmDelete' />
+    <div class="confirmBlock" v-if="removedTodoId">
         Подтвердить удаление
-        <button class="confirm" @click="removeTodo">Подтвердить</button>
-        <button class="cancled"  @click="removedTodoId = null;dialog = !dialog">Отмена</button>
+        <button class="reconfirm" @click="removeTodo">Подтвердить</button>
+        <button class="cancel" @click="removedTodoId = null; confirmBlock = !confirmBlock">Отмена</button>
     </div>
 </div>
 </template>
@@ -19,13 +19,13 @@ export default {
     data() {
         return {
             removedTodoId: null,
-            dialog: false
+            confirmBlock: false
         }
     },
     methods: {
-        changeCofirmDelete(id) {
+        changeReconfirmDelete(id) {
             this.removedTodoId = id
-            this.dialog = true
+            this.confirmBlock = true
         },
         removeTodo() {
             this.$emit('remove-todo', this.removedTodoId)
@@ -33,4 +33,3 @@ export default {
     }
 };
 </script>
-

@@ -5,7 +5,6 @@
         <ul v-if="todo.projects.length">
             <li v-for='project in todo.projects' :key='project.id'>
                 <span v-bind:class='{done: project.completed}'>
-                    <input type='checkbox' v-on:change='project.completed = !project.completed' v-model='project.completed' disabled />
                     <strong>{{ project.id }}</strong>
                     {{ project.task }}
                 </span>
@@ -16,6 +15,7 @@
             <button class='change-todo' v-on:click='showForm'>Изменить</button>
         </div>
     </div>
+    <!-- Блок для редактирования дел -->
     <div class='content-todo content-change' v-show='isEditing'>
         <div class='field'>
             <label>Заголовок:</label>
@@ -48,6 +48,7 @@ export default {
         }
     },
     methods: {
+        // Метод связан с AddTodo, что бы была возможность редактировать список задач
         createProject() {
             const id = this.todo.projects.length + 1
             this.todo.projects.push({
@@ -56,9 +57,11 @@ export default {
                 completed: false
             })
         },
+        // При нажатии появляется блок с возможностью редактировать блок
         showForm() {
             this.isEditing = true;
         },
+        // Сохраняет блок с делами и закрывает его
         saveTodo() {
             this.$root.$emit('save-todos', this.newTodo)
             this.isEditing = false

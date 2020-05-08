@@ -1,14 +1,16 @@
 <template>
 <div>
     <button class='create-todo' v-on:click='openForm' v-show='!isCreating'>Создать</button>
+    <!-- При клике на конопку создать. Срабатывает v-show и появляется блок для создания дел -->
     <div v-show='isCreating'>
-        <form class='form' @submit.prevent='onSubmit'>
+        <!-- При submit страница перезагружается. Prevent сбрасывает это состояние. Так как нам нужно, что бы только на кнопку с type submit было сохранение и закрытие блока. -->
+        <form class='form' @submit.prevent='onSubmit'> 
             <div class='field'>
                 <label>Заголовок:</label>
                 <input v-model="task.title" type='text' ref='title' defaultValue="">
             </div>
             <div class='field' v-for="projects of task.projects" :key="projects.id">
-                <label>Задачи:</label>
+                <label>Задача:</label>
                 <input v-model="projects.task" type='text' ref='projects' defaultValue="">
             </div>
 
@@ -30,6 +32,7 @@
 
 <script>
 export default {
+    // Параметры, которые будут входить при создании задачи
     data() {
         return {
             task: {
@@ -44,12 +47,15 @@ export default {
         };
     },
     methods: {
+        // Открыть блок для создания
         openForm() {
             this.isCreating = true;
         },
+        // Закрыть блок для создания
         closeForm() {
             this.isCreating = false;
         },
+           // Значение, которое должны быть добавлено при создании нового пункта
         createProject() {
             const id = this.task.projects.length + 1
             this.task.projects.push({
@@ -61,15 +67,15 @@ export default {
         onSubmit() {
             const newTodo = this.task
             this.$emit('add-todo', newTodo);
-            this.task =  {
-                title: '',
-                projects: [{
-                    id: 1,
-                    task: '',
-                    completed: false
-                }],
-            },
-            this.isCreating = false;
+            this.task = {
+                    title: '',
+                    projects: [{
+                        id: 1,
+                        task: '',
+                        completed: false
+                    }],
+                },
+                this.isCreating = false;
         },
     },
 };
