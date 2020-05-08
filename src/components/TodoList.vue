@@ -2,7 +2,7 @@
 <div>
     <TodoItem v-for='(todo, i) of todos' :todo='todo' :key="todo.id" :index='i' @remove-todo='changeReconfirmDelete' />
     <div class="confirmBlock" v-if="removedTodoId">
-        Подтвердить удаление
+        Подтвердить удаление списка задач?
         <button class="reconfirm" @click="removeTodo">Подтвердить</button>
         <button class="cancel" @click="removedTodoId = null; confirmBlock = !confirmBlock">Отмена</button>
     </div>

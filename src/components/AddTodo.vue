@@ -1,10 +1,10 @@
 <template>
 <div>
-    <button class='create-todo' v-on:click='openForm' v-show='!isCreating'>Создать</button>
+    <button class='create-todo create-todo-margin' v-on:click='openForm' v-show='!isCreating'>Создать</button>
     <!-- При клике на конопку создать. Срабатывает v-show и появляется блок для создания дел -->
     <div v-show='isCreating'>
         <!-- При submit страница перезагружается. Prevent сбрасывает это состояние. Так как нам нужно, что бы только на кнопку с type submit было сохранение и закрытие блока. -->
-        <form class='form' @submit.prevent='onSubmit'> 
+        <form class='form' @submit.prevent='onSubmit'>
             <div class='field'>
                 <label>Заголовок:</label>
                 <input v-model="task.title" type='text' ref='title' defaultValue="">
@@ -16,12 +16,12 @@
 
             <div class='buttons'>
                 <button type="button" class='create-todo' v-on:click="createProject()">
-                    Добавить дело
+                    Добавить задачу
                 </button>
                 <button type="submit" class='create-todo'>
                     Сохранить
                 </button>
-                <button class='delete-todo' v-on:click="closeForm" type="button">
+                <button class='cancel-todo' v-on:click="closeForm" type="button">
                     Отмена
                 </button>
             </div>
@@ -55,7 +55,7 @@ export default {
         closeForm() {
             this.isCreating = false;
         },
-           // Значение, которое должны быть добавлено при создании нового пункта
+        // Значение, которое должны быть добавлено при создании нового пункта
         createProject() {
             const id = this.task.projects.length + 1
             this.task.projects.push({
@@ -96,14 +96,17 @@ export default {
 }
 
 .create-todo {
-    border: 1px solid #3700ff;
-    color: #3700ff;
+    border: 1px solid #2199e8;
+    color: #2199e8;
     cursor: pointer;
+}
+
+.create-todo-margin {
     margin-bottom: 10px;
 }
 
 .create-todo:hover {
-    background: #3700ff;
+    background: #2199e8;
     color: #fff;
 }
 
@@ -111,14 +114,21 @@ input {
     margin-left: 10px;
 }
 
-.delete-todo {
-    border: 1px solid #ff0000;
-    color: #ff0000;
+.buttons {
+    max-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    margin: auto
+}
+
+.cancel-todo {
+    border: 1px solid #ec5840;
+    color: #ec5840;
     cursor: pointer;
 }
 
-.delete-todo:hover {
-    background: #ff0000;
+.cancel-todo:hover {
+    background: #ec5840;
     color: #fff;
 }
 </style>

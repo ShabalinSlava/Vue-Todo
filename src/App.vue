@@ -33,17 +33,18 @@ export default {
 
     },
     methods: {
-        // Сохранение при перезагрузки страницы
+        // Сохранение изменения
         saveTodo(updatedTodo) {
             this.todos[updatedTodo.id - 1] = updatedTodo
             localStorage.setItem('todos', JSON.stringify(this.todos))
         },
-        // Удаление
+        // Удаление блока с задачами
         removeTodo(id) {
             if (this.todos.length > 1) {
                 this.todos = this.todos.filter(t => t.id !== id)
+            } else {
+                this.todos = []
             }
-            this.todos = []
             localStorage.setItem('todos', JSON.stringify(this.todos))
         },
         // Добавление

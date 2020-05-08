@@ -12,7 +12,7 @@
         </ul>
         <div class='buttons'>
             <button class='delete-todo' v-on:click='$emit("remove-todo", todo.id)'>Удалить</button>
-            <button class='change-todo' v-on:click='showForm'>Изменить</button>
+            <button class='change-todo' v-on:click='isEditing = true'>Изменить</button>
         </div>
     </div>
     <!-- Блок для редактирования дел -->
@@ -25,6 +25,7 @@
             <label>Задача:</label>
             <input v-model="projects.completed" type='checkbox' ref='projects' defaultValue="">
             <input type='text' v-model="projects.task">
+            <button class='delete-task' v-on:click="removeProject(projects.id)">&times;</button>
         </div>
         <button class='change-todo' v-on:click='saveTodo'>Сохранить / Закрыть</button>
         <button class='change-todo' v-on:click='createProject'>Добавить дело</button>
@@ -44,7 +45,7 @@ export default {
     data() {
         return {
             isEditing: false,
-            newTodo: this.todo
+            newTodo: this.todo,
         }
     },
     methods: {
@@ -57,14 +58,17 @@ export default {
                 completed: false
             })
         },
-        // При нажатии появляется блок с возможностью редактировать блок
-        showForm() {
-            this.isEditing = true;
-        },
         // Сохраняет блок с делами и закрывает его
         saveTodo() {
             this.$root.$emit('save-todos', this.newTodo)
             this.isEditing = false
+        },
+        removeProject(id) {
+            if (this.todo.projects.length > 1) {
+                this.todo.projects = this.todo.projects.filter(p => p.id !== id)
+            } else {
+                this.todo.projects = []
+            }
         }
     }
 }
@@ -115,13 +119,13 @@ input {
 }
 
 .delete-todo {
-    border: 1px solid #ff0000;
-    color: #ff0000;
+    border: 1px solid #ec5840;
+    color: #ec5840;
     cursor: pointer;
 }
 
 .delete-todo:hover {
-    background: #ff0000;
+    background: #ec5840;
     color: #fff;
 }
 
@@ -138,5 +142,12 @@ input {
 
 input {
     margin-bottom: 10px;
+}
+
+.delete-task {
+    border: 1px solid #ec5840;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
 }
 </style>
